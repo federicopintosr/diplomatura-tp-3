@@ -1,2 +1,19 @@
+# Python / Jupyter
 __pycache__/
 .ipynb_checkpoints/
+.venv/
+
+# Datos crudos (Sentiment140, ~230 MB): se descargan con notebooks/01_discovery.ipynb
+data/raw/
+
+# Artefactos pesados que se regeneran
+*.npy
+# UMAP sí se sube (6 MB): fija los tópicos de la 04 aunque se recalculen los embeddings
+!data/processed/umap_5d.npy
+!data/processed/umap_2d.npy
+*.npz
+*.zip
+
+# Documentos personales (seguimiento y notas para exponer)
+PLAN_DE_TRABAJO.md
+NOTAS_EXPOSICION_TP3.md

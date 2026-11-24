@@ -20,6 +20,7 @@ hdbscan==0.8.44
 scikit-learn==1.7.2
 gensim==4.4.0
 nltk==3.10.4
+langdetect==1.0.9
 
 # Notebooks
 ipykernel==7.3.0
