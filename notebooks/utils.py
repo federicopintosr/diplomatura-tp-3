@@ -260,3 +260,70 @@ def evaluar_eventos(grupos, textos, dias, eventos, min_precision=0.5):
     res["aislado"] = res["precisión"] >= min_precision
     res["confirmado"] = res["aislado"] & res["pico ok"].fillna(False).astype(bool)
     return res.round({"precisión": 2, "recall": 2})
+
+
+# ---------------------------------------------------------------- traducciones para presentar
+
+FILE_TRADUCCIONES = Path(__file__).resolve().parent / "traducciones.csv"
+SIN_TRADUCCION = "(sin traducción)"
+
+
+def _clave(texto):
+    return " ".join(str(texto).split())
+
+
+def traducir(textos):
+    """Traducción al español de los tweets que se muestran en las notebooks.
+
+    Las traducciones están en `traducciones.csv` (hechas a mano, libres, para
+    presentar). Si la variable de entorno TRADUCCIONES_PENDIENTES tiene una
+    ruta, ahí se anotan los textos que todavía no tienen traducción.
+    """
+    import json
+    import os
+
+    mapa = {}
+    if FILE_TRADUCCIONES.exists():
+        tabla = pd.read_csv(FILE_TRADUCCIONES, keep_default_na=False)
+        mapa = dict(zip(tabla["texto"].map(_clave), tabla["traduccion"]))
+    resultado = [mapa.get(_clave(t), SIN_TRADUCCION) for t in textos]
+    pendientes = os.environ.get("TRADUCCIONES_PENDIENTES")
+    if pendientes:
+        with open(pendientes, "a", encoding="utf-8") as f:
+            for t, r in zip(textos, resultado):
+                if r == SIN_TRADUCCION:
+                    f.write(json.dumps(_clave(t), ensure_ascii=False) + "\n")
+    return resultado
+
+
+def con_traduccion(df, columna, nombre="traducción"):
+    """Copia de `df` con la traducción de `columna` en una columna al lado."""
+    df = df.copy()
+    df.insert(df.columns.get_loc(columna) + 1, nombre, traducir(df[columna]))
+    return df
+
+
+def tabla_traduccion(textos):
+    """Tabla tweet / traducción para mostrar debajo de una salida con tweets."""
+    textos = pd.Series(textos)
+    return pd.DataFrame({"tweet": textos.values, "traducción": traducir(textos)}, index=textos.index)
+
+
+def ejemplos_representativos(mascara, centro, X, textos, n=2, min_palabras=6):
+    """Los `n` tweets de un grupo más parecidos a su centro (similitud coseno).
+
+    Se piden al menos `min_palabras` para que el ejemplo se entienda y se
+    saltean textos repetidos.
+    """
+    largo = textos.str.split().str.len().to_numpy()
+    idx = np.where(mascara & (largo >= min_palabras))[0]
+    centro = centro / np.linalg.norm(centro)
+    elegidos, vistos = [], set()
+    for i in idx[np.argsort(-(X[idx] @ centro))]:
+        clave = textos.iloc[i].lower()
+        if clave not in vistos:
+            vistos.add(clave)
+            elegidos.append(textos.iloc[i])
+        if len(elegidos) == n:
+            break
+    return elegidos
