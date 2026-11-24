@@ -27,7 +27,7 @@ Jon y Kate Gosselin anuncian su separación,EDA,232,12,0.04,0.8,22/06,22/06,True
 Muerte de Ed McMahon,EDA,61,5,0.01,0.87,04/06,23/06,False,False,False,"Personas por nombre (Jonas, Idol, Carradine)"
 Estreno de Transformers 2,EDA,238,11,0.03,0.71,31/05,24/06,False,False,False,Películas y TV
 Muerte de Farrah Fawcett (9:28 PDT),EDA,160,12,0.03,0.86,22/06,25/06,False,False,False,"Famosos (Jon & Kate, Miley, Farrah)"
-Día de Star Wars (4 de mayo),BERTopic,57,22,0.01,0.54,04/05,04/05,True,False,False,Cómo va el día
+Día de Star Wars (4 de mayo),BERTopic,57,21,0.01,0.54,04/05,04/05,True,False,False,Cómo va el día
 Feriado bancario de mayo (Reino Unido),BERTopic,101,26,0.01,0.19,22/05,04/05,False,False,False,Días de la semana
 Final de America's Next Top Model (Allison Harvard 2.ª),BERTopic,49,12,0.0,0.49,22/06,13/05,False,False,False,"Famosos (Jon & Kate, Miley, Farrah)"
 Estreno de la temporada 2 de True Blood,BERTopic,87,11,0.01,0.33,31/05,14/06,False,False,False,Películas y TV

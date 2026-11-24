@@ -49,7 +49,8 @@ TP3/
 │   ├── 05_keywords_y_clustering.ipynb
 │   ├── 06_comparacion_y_conclusiones.ipynb
 │   ├── utils.py                    # lectura, fechas, limpieza, stopwords y métricas compartidas
-│   └── eventos.py                  # 34 eventos candidatos con patrón, fechas y fuente
+│   ├── eventos.py                  # 34 eventos candidatos con patrón, fechas, fuente y etiqueta
+│   └── traducciones.csv            # traducción al español de los tweets que se muestran (para presentar)
 ├── Consignas_proyecto_NLP.ipynb    # consigna
 ├── requirements.txt
 └── README.md
@@ -78,8 +79,8 @@ Las notebooks se ejecutan **desde la carpeta `notebooks/`** y **en orden**. Tiem
 | 01 | Descarga y diagnóstico (no modifica nada) | `data/raw/` | < 1 min |
 | 02 | EDA: palabras, hashtags, PMI de bigramas, PMI palabra–día, hipótesis de eventos | — | ~3,5 min |
 | 03 | Limpieza, deduplicación, muestra con tope por día, embeddings | `muestra.csv.gz`, `embeddings.npy` | ~15 min |
-| 04 | BERTopic: elección de parámetros, tópicos en el tiempo, validación de eventos | modelo, `topicos_bertopic.csv` | ~2,5 min (+7 min si recalcula UMAP) |
-| 05 | KeyBERT, representación, K-means, tópicos nombrados a mano | `palabras_clave.csv.gz`, `clusters_kmeans.csv` | ~4,5 min (+3 min si recalcula KeyBERT) |
+| 04 | BERTopic: elección de parámetros, tópicos en el tiempo, validación de eventos, fichas de tópicos | modelo, `topicos_bertopic.csv` | ~2,5 min (+7 min si recalcula UMAP) |
+| 05 | KeyBERT, representación, K-means, tópicos nombrados a mano con ejemplos | `palabras_clave.csv.gz`, `clusters_kmeans.csv` | ~4,5 min (+3 min si recalcula KeyBERT) |
 | 06 | Comparación, concordancia, control con el archivo de test, conclusiones | — | ~1 min |
 
 `embeddings.npy` no está en el repo: para correr de la 04 en adelante hay que correr antes la 01 y la 03.
@@ -119,7 +120,7 @@ Las notebooks se ejecutan **desde la carpeta `notebooks/`** y **en orden**. Tiem
 - Solo 48 de 81 días tienen datos. Los eventos en huecos (por ejemplo, Pascua) no pueden aparecer.
 - Los eventos con menos de ~50 tweets en la muestra no llegan a formar tópico.
 - La precisión contra eventos se mide por palabras clave: es una cota inferior.
-- Se usó una sola semilla; no se midió la estabilidad de los agrupamientos.
+- Se usó una sola semilla; no se midió la estabilidad de los agrupamientos. Entre corridas, K-means puede mover ~0,05% de los tweets de cluster por diferencias numéricas en CPU, sin cambiar nombres ni resultados.
 
 ## Fuentes
 
